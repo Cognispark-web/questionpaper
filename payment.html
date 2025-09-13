@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Pay by UPI</title>
+  <style>
+    :root{
+      --card-bg:#fff; --accent:#1565c0; --accent-2:#2e7d32; --muted:#6b7280;
+    }
+    body{
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg,#f3f7fb,#ffffff);
+      display:flex; align-items:center; justify-content:center; min-height:100vh; margin:0;
+    }
+    .card{
+      width:100%; max-width:420px; background:var(--card-bg); padding:20px; border-radius:12px;
+      box-shadow:0 10px 30px rgba(12,24,60,0.08); text-align:center;
+    }
+    h3{ margin:0 0 10px; color:var(--accent); }
+    p.note{ color:var(--muted); margin:6px 0 18px; font-size:14px; }
+    .qr-row{ display:flex; gap:16px; align-items:center; justify-content:center; margin-bottom:14px; }
+    .qr-row img{ width:160px; height:160px; border-radius:8px; border:1px solid #e6eef8; }
+    .info{ text-align:left; margin:10px 0 16px; }
+    .info .line{ display:flex; justify-content:space-between; padding:8px 12px; border-radius:8px; background:#fbfdff; border:1px solid #eef6ff; margin-bottom:8px; }
+    .info .label{ color:var(--muted); font-size:13px; }
+    .buttons{ display:flex; gap:10px; flex-wrap:wrap; }
+    .btn{
+      flex:1 1 48%; padding:12px; border-radius:8px; border:none; cursor:pointer; font-weight:600;
+      color:#fff; background:var(--accent); box-shadow:0 6px 18px rgba(21,101,192,0.12);
+    }
+    .btn.secondary{ background:var(--accent-2); box-shadow:0 6px 18px rgba(46,125,50,0.12); }
+    .small{ font-size:13px; color:var(--muted); margin-top:10px;}
+    .copy-btn{ background:transparent; border:1px dashed #d0e6ff; color:var(--accent); padding:8px 10px; border-radius:8px; cursor:pointer; font-weight:600;}
+  </style>
+</head>
+<body>
+
+  <div class="card" id="upiCard">
+    <h3>Chela Mary Public School — Pay by UPI</h3>
+    <p class="note">Secure UPI payment. Enter the amount in your UPI app and add this note (order id) for tracking.</p>
+
+    <div class="qr-row">
+      <img id="qrImg" src="" alt="UPI QR code" />
+    </div>
+
+    <div class="info">
+      <div class="line"><div class="label">UPI ID</div><div id="upiIdText">your-upi@bank</div></div>
+      <div class="line"><div class="label">Receiver</div><div id="receiverName">Receiver Name</div></div>
+      <div class="line"><div class="label">Order Note</div><div id="orderNote">ORDER-XXXX</div></div>
+    </div>
+
+    <div class="buttons">
+      <button class="btn" id="openUpiBtn">Open UPI App</button>
+      <button class="btn secondary" id="copyBtn">Copy UPI ID</button>
+    </div>
+
+    <p class="small">Tip: mobile users should tap "Open UPI App" — desktop users can scan the QR with their phone camera/app.</p>
+  </div>
+
+  <script>
+    // ====== CONFIGURE ======
+    const UPI_ID = "your-upi@bank";        // <<<<<< Replace with real UPI ID (use guardian's if needed)
+    const RECEIVER_NAME = "Chela Mary Public School"; // name for clarity
+    const AMOUNT = ""; // leave empty to let payer enter amount in their app e.g. "100" or "" for free entry
+    // Order id generation (for tracking)
+    const ORDER_ID = "CMPS-" + Date.now().toString().slice(-6);
+
+    // ====== Build UPI deep link ======
+    // upi://pay?pa=<payee address>&pn=<payee name>&tn=<transaction note>&am=<amount>&cu=INR
+    // encode components
+    function enc(v){ return encodeURIComponent(v || ""); }
+
+    const upiParams = [
+      "pa=" + enc(UPI_ID),
+      "pn=" + enc(RECEIVER_NAME),
+      "tn=" + enc("Order " + ORDER_ID),
+      AMOUNT ? ("am=" + enc(AMOUNT)) : "",
+      "cu=INR"
+    ].filter(Boolean).join("&");
+
+    const upiDeepLink = "upi://pay?" + upiParams;
+
+    // Set UI elements
+    document.getElementById("upiIdText").innerText = UPI_ID;
+    document.getElementById("receiverName").innerText = RECEIVER_NAME;
+    document.getElementById("orderNote").innerText = ORDER_ID;
+
+    // Use Google Chart API to render QR for the UPI deep link (works fine)
+    // Note: This uses an external Google URL to generate the QR image
+    const qrPayload = encodeURIComponent(upiDeepLink);
+    const qrUrl = `https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl=${qrPayload}&choe=UTF-8`;
+    document.getElementById("qrImg").src = qrUrl;
+
+    // Open UPI app
+    document.getElementById("openUpiBtn").addEventListener("click", function(){
+      // On mobile this will attempt to open installed UPI apps
+      window.location.href = upiDeepLink;
+
+      // For fallback (some browsers block), also open the UPI deep link in a new small window
+      setTimeout(() => {
+        window.open(upiDeepLink, "_blank");
+      }, 500);
+    });
+
+    // Copy UPI ID
+    document.getElementById("copyBtn").addEventListener("click", async function(){
+      try {
+        await navigator.clipboard.writeText(UPI_ID);
+        this.innerText = "Copied ✓";
+        setTimeout(()=> this.innerText = "Copy UPI ID", 1500);
+      } catch (e) {
+        alert("Copy failed — please select and copy manually: " + UPI_ID);
+      }
+    });
+
+    // Optional: track clicks (basic)
+    document.getElementById("openUpiBtn").addEventListener("click", () => {
+      // send analytics / logging to your backend (if you have one)
+      // fetch("/log-payment-click", {method:"POST", body: JSON.stringify({order:ORDER_ID, upi:UPI_ID})});
+      console.log("UPI open clicked", ORDER_ID);
+    });
+  </script>
+</body>
+</html>
