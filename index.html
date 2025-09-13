@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Exam Paper</title>
+  <style>
+    /* Reset & base */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    header {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin: 20px 0;
+      color: #222;
+      text-align: center;
+    }
+
+    .notice {
+      background: #ffeb3b;
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+      text-align: center;
+      animation: scroll-left 12s linear infinite;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    @keyframes scroll-left {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    main {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    main img {
+      width: 100%;
+      max-width: 280px;
+      margin: 10px auto 20px;
+      display: block;
+    }
+
+    button {
+      background: #007bff;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="notice">
+    Get Question Paper of Class 9th & 10th *Rs.100
+  </div>
+
+  <header>Exam Question Paper</header>
+
+  <main>
+    <img src="pngtree-test-taking-vector-png-image_6931363.png" alt="Exam Illustration">
+    <a href="getquestion.html"><button>Get Question Paper</button></a>
+  </main>
+
+</body>
+</html>

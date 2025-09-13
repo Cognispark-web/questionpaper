@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question Paper</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #f4f7fa;
+      color: #333;
+    }
+
+    /* Notice bar */
+    .notice {
+      background: #e63946;
+      color: #fff;
+      padding: 6px;
+      text-align: center;
+      font-size: 0.95rem;
+      animation: scroll-left 12s linear infinite;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    @keyframes scroll-left {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* Header */
+    header {
+      background: #111;
+      color: #fff;
+      font-size: 1.3rem;
+      text-align: center;
+      padding: 18px 0;
+      font-weight: bold;
+    }
+
+    main {
+      max-width: 500px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+
+    p {
+      font-size: 1rem;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      margin-bottom: 20px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    select:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 6px rgba(0,123,255,0.4);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: #007bff;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="notice">
+    Get Question Paper of Class 9th & 10th *Rs.100
+  </div>
+
+  <header>
+    Exam Question Paper
+  </header>
+
+  <main>
+    <p>Choose Your School:</p>
+   <select id="schoolSelect">
+  <option value="" disabled selected>-- Select a School --</option>
+ 
+  <option>Chela Mary Public School, Motihari</option>
+
+</select>
+
+    <button onclick="chooseSchool()">Submit</button>
+  </main>
+
+  <script>
+    function chooseSchool() {
+      const school = document.getElementById("schoolSelect").value;
+      if (!school) {
+        alert("Please select a school first!");
+      } else {
+        window.location.href = "question.html"
+      
+      }
+    }
+  </script>
+
+</body>
+</html>
